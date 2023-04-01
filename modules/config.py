@@ -27,7 +27,7 @@ if os.environ.get("dockerrun") == "yes":
     dockerflag = True
 
 ## 处理 api-key 以及 允许的用户列表
-my_api_key = config.get("openai_api_key", "") # 在这里输入你的 API 密钥
+my_api_key = config.get("openai_api_key", "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") # 在这里输入你的 API 密钥
 authflag = "users" in config
 auth_list = config.get("users", []) # 实际上是使用者的列表
 my_api_key = os.environ.get("my_api_key", my_api_key)

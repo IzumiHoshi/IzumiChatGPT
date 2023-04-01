@@ -37,16 +37,12 @@ with gr.Blocks(css=customCSS, theme=small_and_beautiful_theme) as demo:
                 chatbot = gr.Chatbot(elem_id="chuanhu_chatbot").style(height="100%")
             with gr.Row():
                 with gr.Column(scale=12):
-                    user_input = gr.Textbox(
-                        show_label=False, placeholder="在这里输入"
-                    ).style(container=False)
+                    user_input = gr.Textbox(show_label=False, placeholder="在这里输入").style(container=False)
                 with gr.Column(min_width=70, scale=1):
                     submitBtn = gr.Button("发送", variant="primary")
                     cancelBtn = gr.Button("取消", variant="secondary", visible=False)
             with gr.Row():
-                emptyBtn = gr.Button(
-                    "🧹 新的对话",
-                )
+                emptyBtn = gr.Button("🧹 新的对话", )
                 retryBtn = gr.Button("🔄 重新生成")
                 delFirstBtn = gr.Button("🗑️ 删除最旧对话")
                 delLastBtn = gr.Button("🗑️ 删除最新对话")
@@ -64,12 +60,11 @@ with gr.Blocks(css=customCSS, theme=small_and_beautiful_theme) as demo:
                         label="API-Key",
                     )
                     usageTxt = gr.Markdown("**发送消息** 或 **提交key** 以显示额度", elem_id="usage_display")
-                    model_select_dropdown = gr.Dropdown(
-                        label="选择模型", choices=MODELS, multiselect=False, value=MODELS[0]
-                    )
-                    use_streaming_checkbox = gr.Checkbox(
-                        label="实时传输回答", value=True, visible=enable_streaming_option
-                    )
+                    model_select_dropdown = gr.Dropdown(label="选择模型",
+                                                        choices=MODELS,
+                                                        multiselect=False,
+                                                        value=MODELS[0])
+                    use_streaming_checkbox = gr.Checkbox(label="实时传输回答", value=True, visible=enable_streaming_option)
                     use_websearch_checkbox = gr.Checkbox(label="使用在线搜索", value=False)
                     language_select_dropdown = gr.Dropdown(
                         label="选择回复语言（针对搜索&索引功能）",
@@ -103,13 +98,9 @@ with gr.Blocks(css=customCSS, theme=small_and_beautiful_theme) as demo:
                                 with gr.Column():
                                     templateSelectDropdown = gr.Dropdown(
                                         label="从Prompt模板中加载",
-                                        choices=load_template(
-                                            get_template_names(plain=True)[0], mode=1
-                                        ),
+                                        choices=load_template(get_template_names(plain=True)[0], mode=1),
                                         multiselect=False,
-                                        value=load_template(
-                                            get_template_names(plain=True)[0], mode=1
-                                        )[0],
+                                        value=load_template(get_template_names(plain=True)[0], mode=1)[0],
                                     ).style(container=False)
 
                 with gr.Tab(label="保存/加载"):
@@ -211,22 +202,16 @@ with gr.Blocks(css=customCSS, theme=small_and_beautiful_theme) as demo:
         show_progress=True,
     )
 
-    end_outputing_args = dict(
-        fn=end_outputing, inputs=[], outputs=[submitBtn, cancelBtn]
-    )
+    end_outputing_args = dict(fn=end_outputing, inputs=[], outputs=[submitBtn, cancelBtn])
 
-    reset_textbox_args = dict(
-        fn=reset_textbox, inputs=[], outputs=[user_input]
-    )
+    reset_textbox_args = dict(fn=reset_textbox, inputs=[], outputs=[user_input])
 
-    transfer_input_args = dict(
-        fn=transfer_input, inputs=[user_input], outputs=[user_question, user_input, submitBtn, cancelBtn], show_progress=True
-    )
+    transfer_input_args = dict(fn=transfer_input,
+                               inputs=[user_input],
+                               outputs=[user_question, user_input, submitBtn, cancelBtn],
+                               show_progress=True)
 
-    get_usage_args = dict(
-        fn=get_usage, inputs=[user_api_key], outputs=[usageTxt], show_progress=False
-    )
-
+    get_usage_args = dict(fn=get_usage, inputs=[user_api_key], outputs=[usageTxt], show_progress=False)
 
     # Chatbot
     cancelBtn.click(cancel_outputing, [], [])
@@ -342,9 +327,7 @@ with gr.Blocks(css=customCSS, theme=small_and_beautiful_theme) as demo:
     )
 
     # Advanced
-    default_btn.click(
-        reset_default, [], [apihostTxt, proxyTxt, status_display], show_progress=True
-    )
+    default_btn.click(reset_default, [], [apihostTxt, proxyTxt, status_display], show_progress=True)
     changeAPIURLBtn.click(
         change_api_host,
         [apihostTxt],
@@ -358,13 +341,9 @@ with gr.Blocks(css=customCSS, theme=small_and_beautiful_theme) as demo:
         show_progress=True,
     )
 
-logging.info(
-    colorama.Back.GREEN
-    + "\n川虎的温馨提示：访问 http://localhost:7860 查看界面"
-    + colorama.Style.RESET_ALL
-)
+logging.info(colorama.Back.GREEN + "\n温馨提示：访问 http://localhost:8000 查看界面" + colorama.Style.RESET_ALL)
 # 默认开启本地服务器，默认可以直接从IP访问，默认不创建公开分享链接
-demo.title = "川虎ChatGPT 🚀"
+demo.title = "PCKJ ChatGPT 🚀"
 
 if __name__ == "__main__":
     reload_javascript()
@@ -373,14 +352,14 @@ if __name__ == "__main__":
         if authflag:
             demo.queue(concurrency_count=CONCURRENT_COUNT).launch(
                 server_name="0.0.0.0",
-                server_port=7860,
+                server_port=8000,
                 auth=auth_list,
                 favicon_path="./assets/favicon.ico",
             )
         else:
             demo.queue(concurrency_count=CONCURRENT_COUNT).launch(
                 server_name="0.0.0.0",
-                server_port=7860,
+                server_port=8000,
                 share=False,
                 favicon_path="./assets/favicon.ico",
             )
@@ -395,8 +374,12 @@ if __name__ == "__main__":
             )
         else:
             demo.queue(concurrency_count=CONCURRENT_COUNT).launch(
-                share=False, favicon_path="./assets/favicon.ico", inbrowser=True
-            )  # 改为 share=True 可以创建公开分享链接
-        # demo.queue(concurrency_count=CONCURRENT_COUNT).launch(server_name="0.0.0.0", server_port=7860, share=False) # 可自定义端口
-        # demo.queue(concurrency_count=CONCURRENT_COUNT).launch(server_name="0.0.0.0", server_port=7860,auth=("在这里填写用户名", "在这里填写密码")) # 可设置用户名与密码
+                server_name="0.0.0.0",
+                server_port=8000,
+                share=False,
+                favicon_path="./assets/chatgpt32.png",
+                inbrowser=True,
+            )    # 改为 share=True 可以创建公开分享链接
+        # demo.queue(concurrency_count=CONCURRENT_COUNT).launch(server_name="0.0.0.0", server_port=8000, share=False) # 可自定义端口
+        # demo.queue(concurrency_count=CONCURRENT_COUNT).launch(server_name="0.0.0.0", server_port=8000,auth=("在这里填写用户名", "在这里填写密码")) # 可设置用户名与密码
         # demo.queue(concurrency_count=CONCURRENT_COUNT).launch(auth=("在这里填写用户名", "在这里填写密码")) # 适合Nginx反向代理
